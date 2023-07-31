@@ -1,0 +1,45 @@
+SQL Answers:
+
+
+1.	SELECT CustomerID,FirstName,LastName,City
+  	 FROM customers
+ 	WHERE FirstName LIKE "N%" OR City = "xyz";
+
+
+2.	SELECT trackID,Name,Composer,UnitPrice
+  	 FROM tracks
+ 	WHERE (UnitPrice BETWEEN 0 AND 1) AND (COMPOSER NOT LIKE "%T%");
+
+3.	SELECT InvoiceDate,
+       	       sum(Total) AS SUM,
+       	       avg(Total) AS Average
+  	 FROM Invoices
+ 	WHERE InvoiceDate BETWEEN "2020-06-01 00:00:00" AND "2020-06-30 11:59:59"
+ 	GROUP BY InvoiceDate;
+
+4. SELECT TrackId,count(Quantity) as TotalQuantity FROM invoice_items
+	GROUP BY TrackId
+	ORDER BY count(Quantity) DESC;
+ 
+5.	SELECT ArtistId, Name
+  	 FROM artists AS art
+       		LEFT JOIN
+       		albums AS alb ON art.artistID = alb.artistID
+       		LEFT JOIN
+       		tracks AS tr ON alb.albumid = tr.albumid
+ 	WHERE tr.trackid NOT IN (
+           SELECT trackid
+             FROM playlist_track
+       );
+
+6. 	SELECT ab.AlbumId,
+       		ab.Title,
+       		count(pt.playlistID) AS PlaylistCount
+  	 FROM albums as alb
+       		LEFT JOIN
+       		tracks as tr ON alb.albumID = tr.albumid
+       		LEFT JOIN
+       		playlist_track as pt ON tr.trackid = pt.trackid
+ 	GROUP BY (pt.trackid) 
+	HAVING count(pt.playlistID) > 10;
+
